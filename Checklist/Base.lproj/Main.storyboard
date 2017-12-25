@@ -31,7 +31,14 @@
                             <outlet property="delegate" destination="XAo-e6-9Mv" id="K5l-hx-1Be"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Checklist" id="9ns-Yy-L71"/>
+                    <navigationItem key="navigationItem" title="Checklist" id="9ns-Yy-L71">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="1pE-Mm-Rxw">
+                            <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            <connections>
+                                <action selector="addButtonPressed:" destination="XAo-e6-9Mv" id="G3j-54-rlO"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dLZ-rm-o7S" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
