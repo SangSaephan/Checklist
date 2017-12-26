@@ -11,11 +11,14 @@ import UIKit
 class ChecklistViewController: UITableViewController {
     
     var itemArray = ["Find Mike", "Buy Eggos", "Destroy Demogorgon"]
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        if let items = defaults.array(forKey: "ChecklistArray") as? [String] {
+            itemArray = items
+        }
     }
     
     // MARK: - Tableview Datasource Methods
@@ -56,6 +59,7 @@ class ChecklistViewController: UITableViewController {
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             // What will happen when user clicks Add Item
             self.itemArray.append(textField.text!)
+            self.defaults.set(self.itemArray, forKey: "ChecklistArray")
             self.tableView.reloadData()
         }
         
