@@ -7,31 +7,25 @@
 //
 
 import UIKit
+import CoreData
 
 class ChecklistViewController: UITableViewController {
     
     var itemArray = [Item]()
     
-    let defaults = UserDefaults.standard
+    var selectedCategory: Category? {
+        didSet {
+            loadItems()
+        }
+    }
+    
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let item1 = Item()
-        item1.title = "Read a Book"
-        itemArray.append(item1)
-        
-        let item2 = Item()
-        item2.title = "Watch TV"
-        itemArray.append(item2)
-        
-        let item3 = Item()
-        item3.title = "Eat something"
-        itemArray.append(item3)
-        
-        if let items = defaults.array(forKey: "ChecklistArray") as? [Item] {
-            itemArray = items
-        }
+        self.navigationItem.title = selectedCategory?.name!
+        self.navigationController?.navigationBar.tintColor = UIColor.white
     }
     
     // MARK: - Tableview Datasource Methods
@@ -51,13 +45,53 @@ class ChecklistViewController: UITableViewController {
     
     // MARK: - Tableview Delegate Methods
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(itemArray[indexPath.row].title)
-        
         itemArray[indexPath.row].done = !itemArray[indexPath.row].done
+        
+        saveItems()
+        
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            context.delete(itemArray[indexPath.row])
+            itemArray.remove(at: indexPath.row)
+            
+            saveItems()
+        }
+    }
+    
+    // MARK: - Model Manipulation Methods
+    func saveItems() {
+        
+        do {
+            try context.save()
+        } catch {
+            print("Error saving context.")
+        }
         
         tableView.reloadData()
         
-        tableView.deselectRow(at: indexPath, animated: true)
+    }
+    
+    func loadItems(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
+        
+        do {
+            itemArray = try context.fetch(request)
+        } catch {
+            print("Error fetching context.")
+        }
+        
+        tableView.reloadData()
         
     }
     
@@ -69,11 +103,14 @@ class ChecklistViewController: UITableViewController {
         
         let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
             // What will happen when user clicks Add Item
-            let newItem = Item()
+            
+            let newItem = Item(context: self.context)
             newItem.title = textField.text!
+            newItem.done = false
+            newItem.parentCategory = self.selectedCategory
+            
             self.itemArray.append(newItem)
-            self.defaults.set(self.itemArray, forKey: "ChecklistArray")
-            self.tableView.reloadData()
+            self.saveItems()
         }
         
         alert.addTextField { (alertTextField) in
@@ -88,3 +125,24 @@ class ChecklistViewController: UITableViewController {
     
 }
 
+// MARK: - Search Bar Methods
+extension ChecklistViewController: UISearchBarDelegate {
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request: NSFetchRequest<Item> = Item.fetchRequest()
+        let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text!)
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        loadItems(with: request, predicate: predicate)
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text?.count == 0 {
+            loadItems()
+            
+            DispatchQueue.main.async {
+                searchBar.resignFirstResponder()
+            }
+        }
+    }
+}
