@@ -14,6 +14,7 @@
 		4EBF2F2A1FE9917D00793E26 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EBF2F281FE9917D00793E26 /* Main.storyboard */; };
 		4EBF2F2C1FE9917D00793E26 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4EBF2F2B1FE9917D00793E26 /* Assets.xcassets */; };
 		4EBF2F2F1FE9917D00793E26 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4EBF2F2D1FE9917D00793E26 /* LaunchScreen.storyboard */; };
+		6075EC30D6EAA0BED36FAB1A /* Pods_Checklist.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A6D8D965F1717A3AF96D13D9 /* Pods_Checklist.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,9 @@
 		4EBF2F2B1FE9917D00793E26 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4EBF2F2E1FE9917D00793E26 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4EBF2F301FE9917D00793E26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F237078021599309356F65F /* Pods-Checklist.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Checklist.release.xcconfig"; path = "Pods/Target Support Files/Pods-Checklist/Pods-Checklist.release.xcconfig"; sourceTree = "<group>"; };
+		A6D8D965F1717A3AF96D13D9 /* Pods_Checklist.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Checklist.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D594D515BA5BB1230B5662B6 /* Pods-Checklist.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Checklist.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Checklist/Pods-Checklist.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6075EC30D6EAA0BED36FAB1A /* Pods_Checklist.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +81,8 @@
 			children = (
 				4EBF2F231FE9917D00793E26 /* Checklist */,
 				4EBF2F221FE9917D00793E26 /* Products */,
+				BE4B788D7193244F8144767F /* Pods */,
+				BB3454100D893B1FCDA43C82 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -102,6 +109,23 @@
 			path = Checklist;
 			sourceTree = "<group>";
 		};
+		BB3454100D893B1FCDA43C82 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A6D8D965F1717A3AF96D13D9 /* Pods_Checklist.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BE4B788D7193244F8144767F /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				D594D515BA5BB1230B5662B6 /* Pods-Checklist.debug.xcconfig */,
+				6F237078021599309356F65F /* Pods-Checklist.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -109,9 +133,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4EBF2F331FE9917D00793E26 /* Build configuration list for PBXNativeTarget "Checklist" */;
 			buildPhases = (
+				4975E7EDB8169404DCA3F50D /* [CP] Check Pods Manifest.lock */,
 				4EBF2F1D1FE9917D00793E26 /* Sources */,
 				4EBF2F1E1FE9917D00793E26 /* Frameworks */,
 				4EBF2F1F1FE9917D00793E26 /* Resources */,
+				D9E626389A4F357A1FC06891 /* [CP] Embed Pods Frameworks */,
+				7F3B8CD5F23D3763F2D51EE5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -168,6 +195,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4975E7EDB8169404DCA3F50D /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		7F3B8CD5F23D3763F2D51EE5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Checklist/Pods-Checklist-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D9E626389A4F357A1FC06891 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Checklist/Pods-Checklist-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4EBF2F1D1FE9917D00793E26 /* Sources */ = {
@@ -312,6 +387,7 @@
 		};
 		4EBF2F341FE9917D00793E26 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D594D515BA5BB1230B5662B6 /* Pods-Checklist.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -326,6 +402,7 @@
 		};
 		4EBF2F351FE9917D00793E26 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F237078021599309356F65F /* Pods-Checklist.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

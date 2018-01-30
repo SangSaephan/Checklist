@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import ChameleonFramework
 
 class CategoryViewController: UITableViewController {
     
@@ -18,6 +19,8 @@ class CategoryViewController: UITableViewController {
         super.viewDidLoad()
         
         loadCategories()
+        
+        tableView.separatorStyle = .none
     }
     
     // MARK: - Tableview Datasource Methods
@@ -30,6 +33,12 @@ class CategoryViewController: UITableViewController {
         
         cell.textLabel?.text = categoryArray[indexPath.row].name!
         
+        if let color = UIColor(hexString: categoryArray[indexPath.row].cellColor!) {
+            cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+        }
+        
+        cell.backgroundColor = UIColor(hexString: categoryArray[indexPath.row].cellColor ?? "1D9BF6")
+        
         return cell
     }
     
@@ -37,6 +46,15 @@ class CategoryViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         performSegue(withIdentifier: "goToItems", sender: self)
+    }
+    
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            context.delete(categoryArray[indexPath.row])
+            categoryArray.remove(at: indexPath.row)
+            
+            saveCategories()
+        }
     }
     
     // MARK: - Model Manipulation Methods
@@ -77,6 +95,7 @@ class CategoryViewController: UITableViewController {
             
             let newCategory = Category(context: self.context)
             newCategory.name = textField.text!
+            newCategory.cellColor = UIColor.randomFlat.hexValue()
             
             self.categoryArray.append(newCategory)
             self.saveCategories()

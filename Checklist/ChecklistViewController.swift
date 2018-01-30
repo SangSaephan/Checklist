@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreData
+import ChameleonFramework
 
 class ChecklistViewController: UITableViewController {
     
@@ -24,8 +25,27 @@ class ChecklistViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.title = selectedCategory?.name!
-        self.navigationController?.navigationBar.tintColor = UIColor.white
+        tableView.separatorStyle = .none
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        guard let category = selectedCategory else {return}
+        
+        navigationController?.title = category.name!
+        
+        if let colorString = category.cellColor {
+            guard let color = UIColor(hexString: colorString) else {return}
+            
+            navigationController?.navigationBar.barTintColor = color
+            navigationController?.navigationBar.tintColor = ContrastColorOf(color, returnFlat: true)
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        let color = UIColor(hexString: "1192D4")!
+        
+        navigationController?.navigationBar.barTintColor = color
+        navigationController?.navigationBar.tintColor = ContrastColorOf(color, returnFlat: true)
     }
     
     // MARK: - Tableview Datasource Methods
@@ -39,6 +59,13 @@ class ChecklistViewController: UITableViewController {
         cell.textLabel?.text = itemArray[indexPath.row].title
         
         itemArray[indexPath.row].done ? (cell.accessoryType = .checkmark) : (cell.accessoryType = .none)
+        
+        if let colorString = selectedCategory?.cellColor {
+            if let color = UIColor(hexString: colorString) {
+                cell.backgroundColor = color.darken(byPercentage: (CGFloat(indexPath.row) / CGFloat(itemArray.count)))
+                cell.textLabel?.textColor = ContrastColorOf(color, returnFlat: true)
+            }
+        }
         
         return cell
     }
